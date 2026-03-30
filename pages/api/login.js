@@ -1,26 +1,22 @@
-import { serialize } from 'cookie'
-
 export default function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).end()
+  if (req.method !== "POST") {
+    return res.status(405).end();
   }
 
-  const { username, password } = req.body
+  const { username, password } = req.body;
 
-  const validUser = process.env.AUTH_USER
-  const validPass = process.env.AUTH_PASS
-  const authToken = process.env.AUTH_TOKEN
+  const validUser = process.env.AUTH_USER;
+  const validPass = process.env.AUTH_PASS;
+  const authToken = process.env.AUTH_TOKEN;
 
   if (username === validUser && password === validPass) {
-    res.setHeader('Set-Cookie', serialize('ea_auth', authToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 24,
-      path: '/',
-    }))
-    return res.redirect(302, '/')
+    const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
+    res.setHeader(
+      "Set-Cookie",
+      `ea_auth=${authToken}; HttpOnly${secure}; SameSite=Strict; Max-Age=86400; Path=/`,
+    );
+    return res.redirect(302, "/");
   }
 
-  return res.redirect(302, '/login?err=1')
+  return res.redirect(302, "/login?err=1");
 }
