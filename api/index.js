@@ -169,7 +169,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14p
   <div class="agentbar-pulse"></div>
   <span class="agentbar-label">Assistente</span>
   <input type="text" id="agentInput" placeholder='Pergunte ou instrua... ex: "quais clientes não mandaram o extrato?" ou "tem alguém em atraso?"' />
-  <button onclick="runAgent()">Enviar</button>
+  <button data-action="agent">Enviar</button>
 </div>
 
 <!-- BODY -->
@@ -178,27 +178,27 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14p
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-section">Visão geral</div>
-    <div class="nav-item active" id="nav-overview" onclick="showOverview()">
+    <div class="nav-item active" id="nav-overview" data-action="overview">
       <span class="nav-item-name">Todas as empresas</span>
     </div>
     <div class="sidebar-section" style="margin-top:8px">Empresas</div>
-    <div class="nav-item" id="nav-0" onclick="selectEmpresa(0)">
+    <div class="nav-item" id="nav-0" data-action="empresa" data-idx="0">
       <span class="nav-item-name">Padaria São Jorge</span>
       <span class="nav-dot nd-green"></span>
     </div>
-    <div class="nav-item" id="nav-1" onclick="selectEmpresa(1)">
+    <div class="nav-item" id="nav-1" data-action="empresa" data-idx="1">
       <span class="nav-item-name">Moda Feminina Ltda</span>
       <span class="nav-dot nd-amber"></span>
     </div>
-    <div class="nav-item" id="nav-2" onclick="selectEmpresa(2)">
+    <div class="nav-item" id="nav-2" data-action="empresa" data-idx="2">
       <span class="nav-item-name">TechReparo ME</span>
       <span class="nav-dot nd-red"></span>
     </div>
-    <div class="nav-item" id="nav-3" onclick="selectEmpresa(3)">
+    <div class="nav-item" id="nav-3" data-action="empresa" data-idx="3">
       <span class="nav-item-name">Construtora Bonfim</span>
       <span class="nav-dot nd-green"></span>
     </div>
-    <div class="nav-item" id="nav-4" onclick="selectEmpresa(4)">
+    <div class="nav-item" id="nav-4" data-action="empresa" data-idx="4">
       <span class="nav-item-name">Clínica Saúde Já</span>
       <span class="nav-dot nd-green"></span>
     </div>
@@ -262,35 +262,35 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14p
           <div>Próx. venc.</div>
           <div></div>
         </div>
-        <div class="ov-row" onclick="selectEmpresa(0)">
+        <div class="ov-row" data-action="empresa" data-idx="0">
           <div><div class="ov-name">Padaria São Jorge</div><div class="ov-sub">MEI · Simples Nacional</div></div>
           <div><span class="badge bg-green">Em dia</span></div>
           <div class="ov-tasks">4 / 4</div>
           <div class="ov-venc">DAS 20/jan</div>
           <div class="ov-arrow">›</div>
         </div>
-        <div class="ov-row" onclick="selectEmpresa(1)">
+        <div class="ov-row" data-action="empresa" data-idx="1">
           <div><div class="ov-name">Moda Feminina Ltda</div><div class="ov-sub">Ltda · Lucro Presumido</div></div>
           <div><span class="badge bg-amber">Pendente</span></div>
           <div class="ov-tasks">3 / 5</div>
           <div class="ov-venc">DARF 15/jan</div>
           <div class="ov-arrow">›</div>
         </div>
-        <div class="ov-row" onclick="selectEmpresa(2)">
+        <div class="ov-row" data-action="empresa" data-idx="2">
           <div><div class="ov-name">TechReparo ME</div><div class="ov-sub">ME · Simples Nacional</div></div>
           <div><span class="badge bg-red">Atenção</span></div>
           <div class="ov-tasks">2 / 5</div>
           <div class="ov-venc">DAS 20/jan</div>
           <div class="ov-arrow">›</div>
         </div>
-        <div class="ov-row" onclick="selectEmpresa(3)">
+        <div class="ov-row" data-action="empresa" data-idx="3">
           <div><div class="ov-name">Construtora Bonfim</div><div class="ov-sub">SA · Lucro Real</div></div>
           <div><span class="badge bg-green">Em dia</span></div>
           <div class="ov-tasks">5 / 5</div>
           <div class="ov-venc">IRPJ 31/jan</div>
           <div class="ov-arrow">›</div>
         </div>
-        <div class="ov-row" onclick="selectEmpresa(4)">
+        <div class="ov-row" data-action="empresa" data-idx="4">
           <div><div class="ov-name">Clínica Saúde Já</div><div class="ov-sub">Ltda · Simples Nacional</div></div>
           <div><span class="badge bg-green">Em dia</span></div>
           <div class="ov-tasks">4 / 4</div>
@@ -304,7 +304,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14p
     <div id="empresaSection" style="display:none">
       <div class="page-header">
         <div>
-          <button class="back-btn" id="backBtn" onclick="showOverview()">
+          <button class="back-btn" id="backBtn" data-action="overview">
             <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7l5 5"/></svg>
             Voltar para visão geral
           </button>
