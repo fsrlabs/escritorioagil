@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>escritórioágil — dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a18;--ink-2:#3a3a36;--ink-3:#6a6a62;--ink-4:#9a9a8e;
+  --bg:#f5f3ee;--bg-2:#edeae3;--bg-3:#e4e1d8;
+  --white:#ffffff;
+  --green:#1D9E75;--green-dark:#0F6E56;--green-pale:#eef7f3;--green-light:#d0edd e;
+  --amber:#BA7517;--amber-pale:#fef8ee;
+  --red:#A32D2D;--red-pale:#fdf0f0;
+  --border:rgba(26,26,24,0.1);--border-2:rgba(26,26,24,0.16);
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --sidebar:220px;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14px;display:flex;flex-direction:column}
+
+/* TOP BAR */
+.topbar{height:52px;background:var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0}
+.topbar-logo{font-family:var(--serif);font-size:18px;color:var(--bg);letter-spacing:-0.3px}
+.topbar-logo span{color:#7dbf9a;font-style:italic}
+.topbar-meta{display:flex;align-items:center;gap:16px}
+.topbar-escritorio{font-size:12px;color:rgba(245,243,238,0.5)}
+.topbar-user{font-size:12px;color:rgba(245,243,238,0.8);font-weight:500}
+.topbar-dot{width:7px;height:7px;border-radius:50%;background:#1D9E75}
+
+/* AGENT BAR */
+.agentbar{height:52px;border-bottom:1px solid var(--border);background:var(--white);display:flex;align-items:center;gap:12px;padding:0 20px;flex-shrink:0}
+.agentbar-label{font-size:11px;font-weight:500;color:var(--ink-4);letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap}
+.agentbar-pulse{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(0.85)}}
+.agentbar input{flex:1;border:1px solid var(--border-2);border-radius:6px;padding:8px 14px;font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--bg);outline:none;transition:border-color 0.15s,background 0.15s}
+.agentbar input:focus{border-color:var(--green);background:var(--white)}
+.agentbar input::placeholder{color:var(--ink-4)}
+.agentbar button{padding:8px 18px;background:var(--green);border:none;border-radius:6px;font-family:var(--sans);font-size:12px;font-weight:500;color:#fff;cursor:pointer;transition:background 0.15s;white-space:nowrap}
+.agentbar button:hover{background:var(--green-dark)}
+
+/* BODY LAYOUT */
+.body{display:flex;flex:1;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sidebar-section{padding:16px 16px 6px;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-4)}
+.nav-item{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;transition:background 0.12s;border-left:2px solid transparent}
+.nav-item:hover{background:var(--bg)}
+.nav-item.active{background:var(--green-pale);border-left-color:var(--green)}
+.nav-item-name{font-size:13px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-item.active .nav-item-name{color:var(--ink);font-weight:500}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.nd-green{background:#3B6D11}
+.nd-amber{background:#854F0B}
+.nd-red{background:#A32D2D}
+.sidebar-footer{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border)}
+.sidebar-footer-name{font-size:12px;font-weight:500;color:var(--ink-2)}
+.sidebar-footer-email{font-size:11px;color:var(--ink-4);margin-top:2px}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;padding:24px}
+
+/* AGENT REPLY */
+.agent-reply{background:var(--green-pale);border:1px solid #a8dbc9;border-radius:8px;padding:12px 16px;margin-bottom:20px;display:none;animation:fadeIn 0.3s ease}
+.agent-reply.visible{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.agent-reply-label{font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.agent-reply-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);display:block}
+.agent-reply-text{font-size:13px;color:var(--green-dark);line-height:1.6}
+
+/* PAGE HEADER */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.page-title{font-family:var(--serif);font-size:22px;color:var(--ink);letter-spacing:-0.3px}
+.page-sub{font-size:12px;color:var(--ink-4);margin-top:3px}
+.back-btn{display:none;align-items:center;gap:6px;font-size:12px;color:var(--ink-4);cursor:pointer;background:none;border:none;font-family:var(--sans);padding:0;transition:color 0.15s}
+.back-btn:hover{color:var(--ink)}
+.back-btn svg{width:14px;height:14px}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
+.bg-green{background:#EAF3DE;color:#27500A}
+.bg-amber{background:#FAEEDA;color:#633806}
+.bg-red{background:#FCEBEB;color:#791F1F}
+
+/* METRICS ROW */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.metric{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.metric-label{font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-4);margin-bottom:6px}
+.metric-val{font-size:26px;font-weight:500;color:var(--ink);line-height:1}
+.metric-val.red{color:var(--red)}
+.metric-sub{font-size:11px;color:var(--ink-4);margin-top:4px}
+
+/* OVERVIEW TABLE */
+.ov-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.ov-row{display:grid;grid-template-columns:1fr 110px 90px 80px 28px;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s}
+.ov-row:last-child{border-bottom:none}
+.ov-row:hover{background:var(--bg)}
+.ov-header{background:var(--bg-2);font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-4);cursor:default}
+.ov-header:hover{background:var(--bg-2)}
+.ov-name{font-size:13px;font-weight:500;color:var(--ink)}
+.ov-sub{font-size:11px;color:var(--ink-4);margin-top:1px}
+.ov-tasks{font-size:12px;color:var(--ink-3);text-align:center}
+.ov-venc{font-size:12px;color:var(--ink-3)}
+.ov-arrow{color:var(--ink-4);font-size:14px;text-align:right}
+
+/* EMPRESA DETAIL */
+.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.detail-metric{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.detail-metric-label{font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-4);margin-bottom:6px}
+.detail-metric-val{font-size:15px;font-weight:500;color:var(--ink)}
+
+/* TASKS */
+.tasks-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.tasks-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--border);background:var(--bg-2)}
+.tasks-header-title{font-size:11px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-4)}
+.tasks-header-count{font-size:11px;color:var(--ink-4)}
+.task-row{display:grid;grid-template-columns:28px 1fr 140px 90px;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid var(--border);transition:background 0.12s}
+.task-row:last-child{border-bottom:none}
+.task-row:hover{background:var(--bg)}
+.task-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.ti-done{background:#EAF3DE;color:#27500A}
+.ti-wait{background:#FAEEDA;color:#633806}
+.ti-alert{background:#FCEBEB;color:#791F1F}
+.task-name{font-size:13px;color:var(--ink-2);line-height:1.4}
+.task-time{font-size:11px;color:var(--ink-4)}
+.task-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;text-align:center}
+.tb-done{background:#EAF3DE;color:#27500A}
+.tb-wait{background:#FAEEDA;color:#633806}
+.tb-alert{background:#FCEBEB;color:#791F1F}
+
+/* DEMO HINT */
+.demo-hint{background:var(--ink);color:var(--bg);border-radius:8px;padding:10px 16px;font-size:12px;margin-bottom:20px;display:flex;align-items:center;gap:10px;line-height:1.5}
+.demo-hint strong{color:#7dbf9a;font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">escritório<span>ágil</span></div>
+  <div class="topbar-meta">
+    <span class="topbar-escritorio">Mendes &amp; Associados Contabilidade</span>
+    <div class="topbar-dot"></div>
+    <span class="topbar-user">rodrigo@escritorioagil.com.br</span>
+  </div>
+</div>
+
+<!-- AGENT BAR -->
+<div class="agentbar">
+  <div class="agentbar-pulse"></div>
+  <span class="agentbar-label">Assistente</span>
+  <input type="text" id="agentInput" placeholder='Pergunte ou instrua... ex: "quais clientes não mandaram o extrato?" ou "tem alguém em atraso?"' />
+  <button onclick="runAgent()">Enviar</button>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">Visão geral</div>
+    <div class="nav-item active" id="nav-overview" onclick="showOverview()">
+      <span class="nav-item-name">Todas as empresas</span>
+    </div>
+    <div class="sidebar-section" style="margin-top:8px">Empresas</div>
+    <div class="nav-item" id="nav-0" onclick="selectEmpresa(0)">
+      <span class="nav-item-name">Padaria São Jorge</span>
+      <span class="nav-dot nd-green"></span>
+    </div>
+    <div class="nav-item" id="nav-1" onclick="selectEmpresa(1)">
+      <span class="nav-item-name">Moda Feminina Ltda</span>
+      <span class="nav-dot nd-amber"></span>
+    </div>
+    <div class="nav-item" id="nav-2" onclick="selectEmpresa(2)">
+      <span class="nav-item-name">TechReparo ME</span>
+      <span class="nav-dot nd-red"></span>
+    </div>
+    <div class="nav-item" id="nav-3" onclick="selectEmpresa(3)">
+      <span class="nav-item-name">Construtora Bonfim</span>
+      <span class="nav-dot nd-green"></span>
+    </div>
+    <div class="nav-item" id="nav-4" onclick="selectEmpresa(4)">
+      <span class="nav-item-name">Clínica Saúde Já</span>
+      <span class="nav-dot nd-green"></span>
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-name">Rodrigo Mendes</div>
+      <div class="sidebar-footer-email">rodrigo@escritorioagil.com.br</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main" id="mainContent">
+
+    <!-- DEMO HINT -->
+    <div class="demo-hint">
+      <strong>Protótipo interativo</strong> — clique nas empresas na barra lateral ou digite perguntas no campo do assistente acima. Experimente: <em>"quais clientes estão em atraso?"</em>
+    </div>
+
+    <!-- AGENT REPLY -->
+    <div class="agent-reply" id="agentReply">
+      <div class="agent-reply-label">Assistente</div>
+      <div class="agent-reply-text" id="agentReplyText"></div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="overviewSection">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Visão geral</div>
+          <div class="page-sub">Janeiro 2025 · 5 empresas ativas</div>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Empresas</div>
+          <div class="metric-val">5</div>
+          <div class="metric-sub">todas sincronizadas</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Tarefas hoje</div>
+          <div class="metric-val">18</div>
+          <div class="metric-sub">14 concluídas pelo assistente</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Aguardando cliente</div>
+          <div class="metric-val amber" style="color:var(--amber)">4</div>
+          <div class="metric-sub">lembretes enviados</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Requer atenção</div>
+          <div class="metric-val red">2</div>
+          <div class="metric-sub">precisam de você</div>
+        </div>
+      </div>
+
+      <div class="ov-card">
+        <div class="ov-row ov-header">
+          <div>Empresa</div>
+          <div>Status</div>
+          <div class="ov-tasks">Tarefas</div>
+          <div>Próx. venc.</div>
+          <div></div>
+        </div>
+        <div class="ov-row" onclick="selectEmpresa(0)">
+          <div><div class="ov-name">Padaria São Jorge</div><div class="ov-sub">MEI · Simples Nacional</div></div>
+          <div><span class="badge bg-green">Em dia</span></div>
+          <div class="ov-tasks">4 / 4</div>
+          <div class="ov-venc">DAS 20/jan</div>
+          <div class="ov-arrow">›</div>
+        </div>
+        <div class="ov-row" onclick="selectEmpresa(1)">
+          <div><div class="ov-name">Moda Feminina Ltda</div><div class="ov-sub">Ltda · Lucro Presumido</div></div>
+          <div><span class="badge bg-amber">Pendente</span></div>
+          <div class="ov-tasks">3 / 5</div>
+          <div class="ov-venc">DARF 15/jan</div>
+          <div class="ov-arrow">›</div>
+        </div>
+        <div class="ov-row" onclick="selectEmpresa(2)">
+          <div><div class="ov-name">TechReparo ME</div><div class="ov-sub">ME · Simples Nacional</div></div>
+          <div><span class="badge bg-red">Atenção</span></div>
+          <div class="ov-tasks">2 / 5</div>
+          <div class="ov-venc">DAS 20/jan</div>
+          <div class="ov-arrow">›</div>
+        </div>
+        <div class="ov-row" onclick="selectEmpresa(3)">
+          <div><div class="ov-name">Construtora Bonfim</div><div class="ov-sub">SA · Lucro Real</div></div>
+          <div><span class="badge bg-green">Em dia</span></div>
+          <div class="ov-tasks">5 / 5</div>
+          <div class="ov-venc">IRPJ 31/jan</div>
+          <div class="ov-arrow">›</div>
+        </div>
+        <div class="ov-row" onclick="selectEmpresa(4)">
+          <div><div class="ov-name">Clínica Saúde Já</div><div class="ov-sub">Ltda · Simples Nacional</div></div>
+          <div><span class="badge bg-green">Em dia</span></div>
+          <div class="ov-tasks">4 / 4</div>
+          <div class="ov-venc">DAS 20/jan</div>
+          <div class="ov-arrow">›</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMPRESA DETAIL -->
+    <div id="empresaSection" style="display:none">
+      <div class="page-header">
+        <div>
+          <button class="back-btn" id="backBtn" onclick="showOverview()">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7l5 5"/></svg>
+            Voltar para visão geral
+          </button>
+          <div class="page-title" id="empName" style="margin-top:8px"></div>
+          <div class="page-sub" id="empMeta"></div>
+        </div>
+        <span class="badge" id="empBadge"></span>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-metric">
+          <div class="detail-metric-label">Regime tributário</div>
+          <div class="detail-metric-val" id="empRegime"></div>
+        </div>
+        <div class="detail-metric">
+          <div class="detail-metric-label">Próximo vencimento</div>
+          <div class="detail-metric-val" id="empVenc"></div>
+        </div>
+        <div class="detail-metric">
+          <div class="detail-metric-label">Status geral</div>
+          <div class="detail-metric-val" id="empStatus"></div>
+        </div>
+      </div>
+
+      <div class="tasks-card">
+        <div class="tasks-header">
+          <span class="tasks-header-title">Tarefas do assistente</span>
+          <span class="tasks-header-count" id="tasksCount"></span>
+        </div>
+        <div id="tasksList"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const empresas = [
+  {
+    name:"Padaria São Jorge",meta:"CNPJ 12.345.678/0001-90 · MEI",
+    regime:"Simples Nacional",venc:"DAS — 20/jan",status:"Em dia",
+    badge:"bg-green",badgeText:"Em dia",
+    tasks:[
+      {icon:"✓",ic:"ti-done",name:"Lembrete DAS janeiro enviado via WhatsApp",time:"hoje, 08h14",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Extrato bancário dezembro coletado",time:"ontem, 17h32",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Notas fiscais dezembro organizadas",time:"ontem, 17h33",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Relatório mensal enviado ao cliente",time:"ontem, 18h01",tb:"tb-done",tbText:"Concluído"},
+    ]
+  },
+  {
+    name:"Moda Feminina Ltda",meta:"CNPJ 98.765.432/0001-11 · Ltda",
+    regime:"Lucro Presumido",venc:"DARF — 15/jan",status:"2 pendências",
+    badge:"bg-amber",badgeText:"Pendente",
+    tasks:[
+      {icon:"✓",ic:"ti-done",name:"Lembrete DARF janeiro enviado",time:"hoje, 08h15",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Folha de pagamento dezembro processada",time:"ontem, 16h20",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"FGTS dezembro recolhido",time:"ontem, 16h22",tb:"tb-done",tbText:"Concluído"},
+      {icon:"⏳",ic:"ti-wait",name:"Extrato bancário dezembro aguardando cliente",time:"solicitado há 2 dias",tb:"tb-wait",tbText:"Aguardando"},
+      {icon:"⏳",ic:"ti-wait",name:"Notas de compra dezembro — 3 faltando",time:"solicitado há 1 dia",tb:"tb-wait",tbText:"Aguardando"},
+    ]
+  },
+  {
+    name:"TechReparo ME",meta:"CNPJ 11.222.333/0001-44 · ME",
+    regime:"Simples Nacional",venc:"DAS — 20/jan",status:"Atenção urgente",
+    badge:"bg-red",badgeText:"Atenção",
+    tasks:[
+      {icon:"✓",ic:"ti-done",name:"Lembrete DAS janeiro enviado",time:"hoje, 08h16",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Certificado digital verificado",time:"ontem, 10h00",tb:"tb-done",tbText:"Concluído"},
+      {icon:"⏳",ic:"ti-wait",name:"Extrato bancário dezembro — sem resposta do cliente",time:"solicitado há 4 dias",tb:"tb-wait",tbText:"Aguardando"},
+      {icon:"!",ic:"ti-alert",name:"DAS novembro em atraso — requer ação imediata",time:"venceu há 12 dias",tb:"tb-alert",tbText:"Urgente"},
+      {icon:"!",ic:"ti-alert",name:"Certificado digital vence em 8 dias",time:"renovação necessária",tb:"tb-alert",tbText:"Urgente"},
+    ]
+  },
+  {
+    name:"Construtora Bonfim",meta:"CNPJ 55.666.777/0001-22 · SA",
+    regime:"Lucro Real",venc:"IRPJ — 31/jan",status:"Em dia",
+    badge:"bg-green",badgeText:"Em dia",
+    tasks:[
+      {icon:"✓",ic:"ti-done",name:"SPED fiscal dezembro transmitido",time:"hoje, 09h00",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Folha dezembro fechada e enviada",time:"ontem, 15h10",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Notas fiscais dezembro conciliadas",time:"ontem, 15h12",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Relatório gerencial dezembro enviado",time:"ontem, 17h00",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Certidão negativa renovada automaticamente",time:"há 3 dias",tb:"tb-done",tbText:"Concluído"},
+    ]
+  },
+  {
+    name:"Clínica Saúde Já",meta:"CNPJ 77.888.999/0001-55 · Ltda",
+    regime:"Simples Nacional",venc:"DAS — 20/jan",status:"Em dia",
+    badge:"bg-green",badgeText:"Em dia",
+    tasks:[
+      {icon:"✓",ic:"ti-done",name:"Lembrete DAS janeiro enviado",time:"hoje, 08h17",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"NFS-e dezembro organizadas (47 notas)",time:"ontem, 14h00",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Livro caixa dezembro atualizado",time:"ontem, 14h05",tb:"tb-done",tbText:"Concluído"},
+      {icon:"✓",ic:"ti-done",name:"Relatório de faturamento enviado ao sócio",time:"ontem, 18h30",tb:"tb-done",tbText:"Concluído"},
+    ]
+  }
+];
+
+const respostas = {
+  extrato:"Moda Feminina Ltda e TechReparo ME ainda não enviaram o extrato de dezembro. Já enviei lembretes automáticos para ambas. Deseja que eu agende um segundo aviso para amanhã às 9h?",
+  atraso:"TechReparo ME tem o DAS de novembro em atraso há 12 dias. Recomendo contato direto com o cliente para regularizar antes de multa adicional. Posso redigir uma mensagem de cobrança formal se quiser.",
+  das:"Todos os lembretes de DAS de janeiro foram enviados esta manhã via WhatsApp. 5 de 5 clientes notificados com sucesso. Vencimentos: Padaria São Jorge, TechReparo ME e Clínica Saúde Já dia 20/jan.",
+  vencimento:"Próximos vencimentos: DARF Moda Feminina 15/jan, DAS 3 clientes 20/jan, IRPJ Construtora Bonfim 31/jan. Deseja que eu envie lembretes antecipados para todos?",
+  pendencia:"Há 4 tarefas aguardando resposta de clientes: 2 da Moda Feminina (extrato e notas) e 2 da TechReparo (extrato e regularização do DAS). Enviei lembretes automáticos. TechReparo também tem certificado digital vencendo em 8 dias.",
+  default:"Entendido. Estou verificando nas bases dos clientes conectados e retorno em instantes com as informações solicitadas."
+};
+
+function runAgent(){
+  const input=document.getElementById('agentInput');
+  const val=input.value.trim().toLowerCase();
+  if(!val)return;
+  let resp=respostas.default;
+  if(val.includes('extrato'))resp=respostas.extrato;
+  else if(val.includes('atraso')||val.includes('atrasado')||val.includes('atrasada'))resp=respostas.atraso;
+  else if(val.includes('das')||val.includes('lembrete'))resp=respostas.das;
+  else if(val.includes('vencimento')||val.includes('vence')||val.includes('vencer'))resp=respostas.vencimento;
+  else if(val.includes('pendencia')||val.includes('pendência')||val.includes('pendente'))resp=respostas.pendencia;
+  const replyEl=document.getElementById('agentReply');
+  const replyText=document.getElementById('agentReplyText');
+  replyText.textContent='';
+  replyEl.classList.add('visible');
+  document.getElementById('mainContent').scrollTop=0;
+  let i=0;
+  const iv=setInterval(()=>{
+    if(i<resp.length){replyText.textContent+=resp[i];i++;}
+    else clearInterval(iv);
+  },16);
+  input.value='';
+}
+
+document.getElementById('agentInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter')runAgent();
+});
+
+function selectEmpresa(idx){
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('nav-'+idx).classList.add('active');
+  document.getElementById('overviewSection').style.display='none';
+  document.getElementById('empresaSection').style.display='block';
+  document.getElementById('backBtn').style.display='flex';
+  const e=empresas[idx];
+  document.getElementById('empName').textContent=e.name;
+  document.getElementById('empMeta').textContent=e.meta;
+  document.getElementById('empRegime').textContent=e.regime;
+  document.getElementById('empVenc').textContent=e.venc;
+  document.getElementById('empStatus').textContent=e.status;
+  const badge=document.getElementById('empBadge');
+  badge.className='badge '+e.badge;
+  badge.textContent=e.badgeText;
+  const done=e.tasks.filter(t=>t.tb==='tb-done').length;
+  document.getElementById('tasksCount').textContent=done+' de '+e.tasks.length+' concluídas';
+  document.getElementById('tasksList').innerHTML=e.tasks.map(t=>`
+    <div class="task-row">
+      <div class="task-icon ${t.ic}">${t.icon}</div>
+      <div class="task-name">${t.name}</div>
+      <div class="task-time">${t.time}</div>
+      <div class="task-badge ${t.tb}">${t.tbText}</div>
+    </div>
+  `).join('');
+  document.getElementById('mainContent').scrollTop=0;
+}
+
+function showOverview(){
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remov
