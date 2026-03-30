@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { empresas } from '@/data/empresas';
-import Topbar from '@/components/Topbar';
-import Sidebar from '@/components/Sidebar';
-import AgentBar from '@/components/AgentBar';
-import OverviewSection from '@/components/OverviewSection';
-import EmpresaSection from '@/components/EmpresaSection';
-import styles from './dashboard.module.css';
+import { useState } from "react";
+import { empresas } from "@/data/empresas";
+import Topbar from "@/components/Topbar";
+import Sidebar from "@/components/Sidebar";
+import AgentBar from "@/components/AgentBar";
+import OverviewSection from "@/components/OverviewSection";
+import EmpresaSection from "@/components/EmpresaSection";
+import styles from "./dashboard.module.css";
 
 export default function DashboardPage() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [agentReply, setAgentReply] = useState('');
+  const [agentReply, setAgentReply] = useState("");
   const [showReply, setShowReply] = useState(false);
 
   function handleSelectEmpresa(idx: number) {
@@ -24,7 +24,7 @@ export default function DashboardPage() {
   }
 
   function handleAgentReply(text: string) {
-    setAgentReply('');
+    setAgentReply("");
     setShowReply(true);
     setActiveIndex(null);
     let i = 0;
@@ -32,7 +32,7 @@ export default function DashboardPage() {
       if (i < text.length) {
         const char = text[i];
         i++;
-        setAgentReply(prev => prev + char);
+        setAgentReply((prev) => prev + char);
       } else {
         clearInterval(iv);
       }
@@ -42,8 +42,8 @@ export default function DashboardPage() {
   return (
     <div className={styles.shell}>
       <Topbar
-        escritorio="Mendes & Associados Contabilidade"
-        user="rodrigo@escritorioagil.com.br"
+        escritorio="Demonstração EscritórioÁgil"
+        user="demonstracao@escritorioagil.com.br"
       />
       <AgentBar onReply={handleAgentReply} />
       <div className={styles.body}>
@@ -55,7 +55,9 @@ export default function DashboardPage() {
         />
         <main className={styles.main}>
           <div className={styles.demoHint}>
-            <strong>Protótipo interativo</strong> — clique nas empresas na barra lateral ou digite perguntas no campo do assistente acima. Experimente: <em>&ldquo;quais clientes estão em atraso?&rdquo;</em>
+            <strong>Protótipo interativo</strong> — clique nas empresas na barra
+            lateral ou digite perguntas no campo do assistente acima.
+            Experimente: <em>&ldquo;quais clientes estão em atraso?&rdquo;</em>
           </div>
 
           {showReply && agentReply && (
@@ -66,9 +68,15 @@ export default function DashboardPage() {
           )}
 
           {activeIndex === null ? (
-            <OverviewSection empresas={empresas} onSelect={handleSelectEmpresa} />
+            <OverviewSection
+              empresas={empresas}
+              onSelect={handleSelectEmpresa}
+            />
           ) : (
-            <EmpresaSection empresa={empresas[activeIndex]} onBack={handleShowOverview} />
+            <EmpresaSection
+              empresa={empresas[activeIndex]}
+              onBack={handleShowOverview}
+            />
           )}
         </main>
       </div>
