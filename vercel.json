@@ -1,6 +1,15 @@
 {
+  "version": 2,
   "rewrites": [
-    { "source": "/api/login", "destination": "/api/login" },
-    { "source": "/(.*)", "destination": "/api/index" }
+    { "source": "/api/auth", "destination": "/api/auth" },
+    { "source": "/dashboard", "destination": "/api/dashboard" }
+  ],
+  "headers": [
+    {
+      "source": "/dashboard",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
   ]
 }
