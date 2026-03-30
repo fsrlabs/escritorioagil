@@ -7,10 +7,10 @@ module.exports = async (req, res) => {
   )
 
   const authed = cookies['ea_auth'] === process.env.AUTH_TOKEN
-  const hasErr = req.url && req.url.includes('err=1')
 
   if (authed) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8')
+    res.setHeader('Content-Security-Policy', "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:")
     res.end(`<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -160,7 +160,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14p
   <div class="topbar-meta">
     <span class="topbar-escritorio">Mendes &amp; Associados Contabilidade</span>
     <div class="topbar-dot"></div>
-    <span class="topbar-user"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8efce1eafce7e9e1cee3ebe0eaebfda0ede0faa0ecfc">[email&#160;protected]</a></span>
+    <span class="topbar-user"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="681a070c1a010f0728050d060c0d1b460b061c460a1a">[email&#160;protected]</a></span>
   </div>
 </div>
 
@@ -204,7 +204,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14p
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-footer-name">Rodrigo Mendes</div>
-      <div class="sidebar-footer-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86f4e9e2f4efe1e9c6ebe3e8e2e3f5a8e5e8f2a8e4f4">[email&#160;protected]</a></div>
+      <div class="sidebar-footer-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fb89949f89929c94bb969e959f9e88d598958fd59989">[email&#160;protected]</a></div>
     </div>
   </div>
 
@@ -341,7 +341,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14p
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
 const empresas = [
   {
     name:"Padaria São Jorge",meta:"CNPJ 12.345.678/0001-90 · MEI",
