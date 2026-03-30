@@ -136,7 +136,7 @@ async function login() {
 
     if (res.ok) {
       btn.textContent = '✓ Acesso liberado';
-      setTimeout(() => { window.location.href = '/dashboard.html'; }, 300);
+      setTimeout(() => { window.location.href = '/dashboard'; }, 300);
     } else {
       errEl.classList.add('visible');
       btn.disabled = false;
