@@ -1,0 +1,91 @@
+import { Empresa } from '@/types';
+
+export const empresas: Empresa[] = [
+  {
+    name: 'Padaria São Jorge',
+    meta: 'CNPJ 12.345.678/0001-90 · MEI',
+    regime: 'Simples Nacional',
+    venc: 'DAS — 20/jan',
+    status: 'Em dia',
+    badge: 'green',
+    badgeText: 'Em dia',
+    tasks: [
+      { icon: '✓', status: 'done', name: 'Lembrete DAS janeiro enviado via WhatsApp', time: 'hoje, 08h14' },
+      { icon: '✓', status: 'done', name: 'Extrato bancário dezembro coletado', time: 'ontem, 17h32' },
+      { icon: '✓', status: 'done', name: 'Notas fiscais dezembro organizadas', time: 'ontem, 17h33' },
+      { icon: '✓', status: 'done', name: 'Relatório mensal enviado ao cliente', time: 'ontem, 18h01' },
+    ],
+  },
+  {
+    name: 'Moda Feminina Ltda',
+    meta: 'CNPJ 98.765.432/0001-11 · Ltda',
+    regime: 'Lucro Presumido',
+    venc: 'DARF — 15/jan',
+    status: '2 pendências',
+    badge: 'amber',
+    badgeText: 'Pendente',
+    tasks: [
+      { icon: '✓', status: 'done', name: 'Lembrete DARF janeiro enviado', time: 'hoje, 08h15' },
+      { icon: '✓', status: 'done', name: 'Folha de pagamento dezembro processada', time: 'ontem, 16h20' },
+      { icon: '✓', status: 'done', name: 'FGTS dezembro recolhido', time: 'ontem, 16h22' },
+      { icon: '⏳', status: 'wait', name: 'Extrato bancário dezembro aguardando cliente', time: 'solicitado há 2 dias' },
+      { icon: '⏳', status: 'wait', name: 'Notas de compra dezembro — 3 faltando', time: 'solicitado há 1 dia' },
+    ],
+  },
+  {
+    name: 'TechReparo ME',
+    meta: 'CNPJ 11.222.333/0001-44 · ME',
+    regime: 'Simples Nacional',
+    venc: 'DAS — 20/jan',
+    status: 'Atenção urgente',
+    badge: 'red',
+    badgeText: 'Atenção',
+    tasks: [
+      { icon: '✓', status: 'done', name: 'Lembrete DAS janeiro enviado', time: 'hoje, 08h16' },
+      { icon: '✓', status: 'done', name: 'Certificado digital verificado', time: 'ontem, 10h00' },
+      { icon: '⏳', status: 'wait', name: 'Extrato bancário dezembro — sem resposta do cliente', time: 'solicitado há 4 dias' },
+      { icon: '!', status: 'alert', name: 'DAS novembro em atraso — requer ação imediata', time: 'venceu há 12 dias' },
+      { icon: '!', status: 'alert', name: 'Certificado digital vence em 8 dias', time: 'renovação necessária' },
+    ],
+  },
+  {
+    name: 'Construtora Bonfim',
+    meta: 'CNPJ 55.666.777/0001-22 · SA',
+    regime: 'Lucro Real',
+    venc: 'IRPJ — 31/jan',
+    status: 'Em dia',
+    badge: 'green',
+    badgeText: 'Em dia',
+    tasks: [
+      { icon: '✓', status: 'done', name: 'SPED fiscal dezembro transmitido', time: 'hoje, 09h00' },
+      { icon: '✓', status: 'done', name: 'Folha dezembro fechada e enviada', time: 'ontem, 15h10' },
+      { icon: '✓', status: 'done', name: 'Notas fiscais dezembro conciliadas', time: 'ontem, 15h12' },
+      { icon: '✓', status: 'done', name: 'Relatório gerencial dezembro enviado', time: 'ontem, 17h00' },
+      { icon: '✓', status: 'done', name: 'Certidão negativa renovada automaticamente', time: 'há 3 dias' },
+    ],
+  },
+  {
+    name: 'Clínica Saúde Já',
+    meta: 'CNPJ 77.888.999/0001-55 · Ltda',
+    regime: 'Simples Nacional',
+    venc: 'DAS — 20/jan',
+    status: 'Em dia',
+    badge: 'green',
+    badgeText: 'Em dia',
+    tasks: [
+      { icon: '✓', status: 'done', name: 'Lembrete DAS janeiro enviado', time: 'hoje, 08h17' },
+      { icon: '✓', status: 'done', name: 'NFS-e dezembro organizadas (47 notas)', time: 'ontem, 14h00' },
+      { icon: '✓', status: 'done', name: 'Livro caixa dezembro atualizado', time: 'ontem, 14h05' },
+      { icon: '✓', status: 'done', name: 'Relatório de faturamento enviado ao sócio', time: 'ontem, 18h30' },
+    ],
+  },
+];
+
+export const respostas: Record<string, string> = {
+  extrato: 'Moda Feminina Ltda e TechReparo ME ainda não enviaram o extrato de dezembro. Já enviei lembretes automáticos para ambas. Deseja que eu agende um segundo aviso para amanhã às 9h?',
+  atraso: 'TechReparo ME tem o DAS de novembro em atraso há 12 dias. Recomendo contato direto com o cliente para regularizar antes de multa adicional. Posso redigir uma mensagem de cobrança formal se quiser.',
+  das: 'Todos os lembretes de DAS de janeiro foram enviados esta manhã via WhatsApp. 5 de 5 clientes notificados com sucesso. Vencimentos: Padaria São Jorge, TechReparo ME e Clínica Saúde Já dia 20/jan.',
+  vencimento: 'Próximos vencimentos: DARF Moda Feminina 15/jan, DAS 3 clientes 20/jan, IRPJ Construtora Bonfim 31/jan. Deseja que eu envie lembretes antecipados para todos?',
+  pendencia: 'Há 4 tarefas aguardando resposta de clientes: 2 da Moda Feminina (extrato e notas) e 2 da TechReparo (extrato e regularização do DAS). Enviei lembretes automáticos. TechReparo também tem certificado digital vencendo em 8 dias.',
+  default: 'Entendido. Estou verificando nas bases dos clientes conectados e retorno em instantes com as informações solicitadas.',
+};

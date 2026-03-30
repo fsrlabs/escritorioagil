@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   const { password } = await request.json();
   const correct = process.env.DASHBOARD_PASSWORD;
 

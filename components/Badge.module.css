@@ -1,0 +1,13 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.green  { background: #eaf3de; color: #27500a; }
+.amber  { background: #faeeda; color: #633806; }
+.red    { background: #fcebeb; color: #791f1f; }

@@ -1,0 +1,150 @@
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-4);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--sans);
+  padding: 0;
+  transition: color 0.15s;
+  margin-bottom: 8px;
+}
+
+.backBtn:hover { color: var(--ink); }
+
+.backBtn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.pageTitle {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+}
+
+.pageSub {
+  font-size: 12px;
+  color: var(--ink-4);
+  margin-top: 3px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.detailMetric {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.detailLabel {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 6px;
+}
+
+.detailVal {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.tasksCard {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tasksHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+.tasksTitle {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.tasksCount {
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+.taskRow {
+  display: grid;
+  grid-template-columns: 28px 1fr 140px 90px;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+
+.taskRow:last-child { border-bottom: none; }
+.taskRow:hover      { background: var(--bg); }
+
+.taskIcon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.tiDone  { background: #eaf3de; color: #27500a; }
+.tiWait  { background: #faeeda; color: #633806; }
+.tiAlert { background: #fcebeb; color: #791f1f; }
+
+.taskName {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+
+.taskTime {
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+.taskBadge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.tbDone  { background: #eaf3de; color: #27500a; }
+.tbWait  { background: #faeeda; color: #633806; }
+.tbAlert { background: #fcebeb; color: #791f1f; }
