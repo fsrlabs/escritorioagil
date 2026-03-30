@@ -30,8 +30,9 @@ export default function DashboardPage() {
     let i = 0;
     const iv = setInterval(() => {
       if (i < text.length) {
-        setAgentReply(prev => prev + text[i]);
+        const char = text[i];
         i++;
+        setAgentReply(prev => prev + char);
       } else {
         clearInterval(iv);
       }
