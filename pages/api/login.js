@@ -1,33 +1,26 @@
-export const config = {
-  runtime: 'edge',
-}
+import { serialize } from 'cookie'
 
-export default async function handler(request) {
-  if (request.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 })
+export default function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).end()
   }
 
-  const formData = await request.formData()
-  const username = formData.get('username')
-  const password = formData.get('password')
+  const { username, password } = req.body
 
   const validUser = process.env.AUTH_USER
   const validPass = process.env.AUTH_PASS
   const authToken = process.env.AUTH_TOKEN
 
   if (username === validUser && password === validPass) {
-    const response = new Response(null, {
-      status: 302,
-      headers: {
-        'Location': '/',
-        'Set-Cookie': `ea_auth=${authToken}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=86400`,
-      },
-    })
-    return response
+    res.setHeader('Set-Cookie', serialize('ea_auth', authToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24,
+      path: '/',
+    }))
+    return res.redirect(302, '/')
   }
 
-  return new Response(null, {
-    status: 302,
-    headers: { 'Location': '/?err=1' },
-  })
+  return res.redirect(302, '/login?err=1')
 }
