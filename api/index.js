@@ -1,4 +1,17 @@
-<!DOCTYPE html>
+module.exports = async (req, res) => {
+  const cookies = Object.fromEntries(
+    (req.headers.cookie || '').split(';')
+      .map(c => c.trim().split('='))
+      .filter(p => p.length === 2)
+      .map(([k, v]) => [k.trim(), v.trim()])
+  )
+
+  const authed = cookies['ea_auth'] === process.env.AUTH_TOKEN
+  const hasErr = req.url && req.url.includes('err=1')
+
+  if (authed) {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8')
+    res.end(`<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -147,7 +160,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14p
   <div class="topbar-meta">
     <span class="topbar-escritorio">Mendes &amp; Associados Contabilidade</span>
     <div class="topbar-dot"></div>
-    <span class="topbar-user"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5e2c313a2c3739311e333b303a3b2d703d302a703c2c">[email&#160;protected]</a></span>
+    <span class="topbar-user"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8efce1eafce7e9e1cee3ebe0eaebfda0ede0faa0ecfc">[email&#160;protected]</a></span>
   </div>
 </div>
 
@@ -191,7 +204,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14p
     </div>
     <div class="sidebar-footer">
       <div class="sidebar-footer-name">Rodrigo Mendes</div>
-      <div class="sidebar-footer-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b9cbd6ddcbd0ded6f9d4dcd7dddcca97dad7cd97dbcb">[email&#160;protected]</a></div>
+      <div class="sidebar-footer-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="86f4e9e2f4efe1e9c6ebe3e8e2e3f5a8e5e8f2a8e4f4">[email&#160;protected]</a></div>
     </div>
   </div>
 
@@ -443,16 +456,59 @@ function selectEmpresa(idx){
   badge.textContent=e.badgeText;
   const done=e.tasks.filter(t=>t.tb==='tb-done').length;
   document.getElementById('tasksCount').textContent=done+' de '+e.tasks.length+' concluídas';
-  document.getElementById('tasksList').innerHTML=e.tasks.map(t=>`
+  document.getElementById('tasksList').innerHTML=e.tasks.map(t=>\`
     <div class="task-row">
-      <div class="task-icon ${t.ic}">${t.icon}</div>
-      <div class="task-name">${t.name}</div>
-      <div class="task-time">${t.time}</div>
-      <div class="task-badge ${t.tb}">${t.tbText}</div>
+      <div class="task-icon \${t.ic}">\${t.icon}</div>
+      <div class="task-name">\${t.name}</div>
+      <div class="task-time">\${t.time}</div>
+      <div class="task-badge \${t.tb}">\${t.tbText}</div>
     </div>
-  `).join('');
+  \`).join('');
   document.getElementById('mainContent').scrollTop=0;
 }
 
 function showOverview(){
-  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remov
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remov`)
+    return
+  }
+
+  res.setHeader('Content-Type', 'text/html; charset=utf-8')
+  res.end(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>escritorioagil acesso</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f5f3ee;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.card{background:#fff;border:1px solid rgba(26,26,24,0.1);border-radius:12px;padding:40px 36px;width:100%;max-width:360px}
+.logo{font-family:'Instrument Serif',Georgia,serif;font-size:22px;color:#1a1a18;margin-bottom:32px;letter-spacing:-0.3px}
+.logo span{color:#0F6E56;font-style:italic}
+label{display:block;font-size:11px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:#9a9a8e;margin-bottom:6px}
+input{width:100%;border:1px solid rgba(26,26,24,0.16);border-radius:6px;padding:10px 14px;font-size:14px;color:#1a1a18;background:#f5f3ee;outline:none;margin-bottom:16px;font-family:inherit}
+input:focus{border-color:#1D9E75;background:#fff}
+input::placeholder{color:#9a9a8e}
+button{width:100%;padding:11px;background:#1a1a18;border:none;border-radius:6px;font-size:14px;font-weight:500;color:#f5f3ee;cursor:pointer;font-family:inherit}
+button:hover{background:#0F6E56}
+.error{font-size:12px;color:#A32D2D;margin-top:12px;text-align:center;display:none}
+.error.show{display:block}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">escritorio<span>agil</span></div>
+  <form method="POST" action="/api/login">
+    <label>Usuario</label>
+    <input type="text" name="username" placeholder="seu usuario" required />
+    <label>Senha</label>
+    <input type="password" name="password" placeholder="..." required />
+    <button type="submit">Entrar</button>
+  </form>
+  <div class="error" id="e">Usuario ou senha incorretos.</div>
+</div>
+<script>if(location.search.includes('err=1'))document.getElementById('e').classList.add('show')</script>
+</body>
+</html>`)
+}

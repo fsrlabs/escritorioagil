@@ -1,3 +1,6 @@
 {
-  "framework": "nextjs"
+  "rewrites": [
+    { "source": "/api/login", "destination": "/api/login" },
+    { "source": "/(.*)", "destination": "/api/index" }
+  ]
 }
