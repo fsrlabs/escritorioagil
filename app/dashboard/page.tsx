@@ -13,6 +13,7 @@ export default function DashboardPage() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [agentReply, setAgentReply] = useState("");
   const [showReply, setShowReply] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   function handleSelectEmpresa(idx: number) {
     setActiveIndex(idx);
@@ -44,6 +45,7 @@ export default function DashboardPage() {
       <Topbar
         escritorio="Demonstração EscritórioÁgil"
         user="demonstracao@escritorioagil.com.br"
+        onMenuToggle={() => setSidebarOpen(true)}
       />
       <AgentBar onReply={handleAgentReply} />
       <div className={styles.body}>
@@ -52,6 +54,8 @@ export default function DashboardPage() {
           activeIndex={activeIndex}
           onSelectEmpresa={handleSelectEmpresa}
           onShowOverview={handleShowOverview}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
         />
         <main className={styles.main}>
           <div className={styles.demoHint}>

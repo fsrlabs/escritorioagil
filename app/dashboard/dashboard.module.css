@@ -17,6 +17,12 @@
   padding: 24px;
 }
 
+@media (max-width: 768px) {
+  .main {
+    padding: 16px;
+  }
+}
+
 .demoHint {
   background: var(--ink);
   color: var(--bg);

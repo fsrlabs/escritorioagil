@@ -95,3 +95,21 @@
 .ovTasks { font-size: 12px; color: var(--ink-3); text-align: center; }
 .ovVenc  { font-size: 12px; color: var(--ink-3); }
 .ovArrow { color: var(--ink-4); font-size: 14px; text-align: right; }
+
+@media (max-width: 768px) {
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ovRow {
+    grid-template-columns: 1fr 100px 28px;
+    gap: 8px;
+    padding: 12px 14px;
+  }
+
+  .ovTasks,
+  .ovVenc { display: none; }
+
+  .ovHeader .ovTasks,
+  .ovHeader .ovVenc { display: none; }
+}

@@ -148,3 +148,21 @@
 .tbDone  { background: #eaf3de; color: #27500a; }
 .tbWait  { background: #faeeda; color: #633806; }
 .tbAlert { background: #fcebeb; color: #791f1f; }
+
+@media (max-width: 768px) {
+  .detailGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .detailGrid .detailMetric:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .taskRow {
+    grid-template-columns: 28px 1fr 80px;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+
+  .taskTime { display: none; }
+}

@@ -67,3 +67,26 @@
 }
 
 .btn:hover { background: var(--green-dark); }
+
+@media (max-width: 768px) {
+  .agentbar {
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .label { display: none; }
+
+  .input {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .input::placeholder {
+    content: 'Pergunte ao assistente...';
+  }
+
+  .btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
